@@ -31,6 +31,7 @@ public class SecurityConfiguration {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request.requestMatchers("/api/authentication/**")
                         .permitAll()
+                        .requestMatchers("http://localhost:8086/api/authentication/validate2").permitAll()
                         .requestMatchers("/api/v1/admin/**").hasAnyAuthority(Role.ADMIN.name())
                         .requestMatchers("/api/v1/user/**").hasAnyAuthority(Role.CONSULTOR.name())
                         .anyRequest().authenticated())

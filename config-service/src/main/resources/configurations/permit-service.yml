@@ -1,0 +1,15 @@
+
+server:
+  port: 8083
+
+spring:
+  application:
+    name: permit-service
+  datasource:
+    url:  jdbc:postgresql://localhost:5432/ventas
+    username: postgres
+    password: admin
+  data:
+    jpa:
+      repositories:
+        enabled:  true
