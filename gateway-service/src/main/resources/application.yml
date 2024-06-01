@@ -1,0 +1,22 @@
+server:
+  port: 8080
+
+spring:
+  config:
+    import: optional:configserver:http://localhost:8888
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled:  true
+      routes:
+        - id: category
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/category/**
+        - id: product
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/product/**
