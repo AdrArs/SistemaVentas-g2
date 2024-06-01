@@ -43,4 +43,10 @@ public class CategoryController {
         return categoryServiceIn.getCategoryClientIn(id);
     }
 
+
+    @PostMapping("/validate2")
+    public boolean validate2(@RequestParam("token") String token){
+        return true;
+    }
+
 }

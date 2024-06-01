@@ -5,10 +5,7 @@ import com.codigo.security_service.aggregates.response.AuthResponse;
 import com.codigo.security_service.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/authentication")
@@ -18,5 +15,21 @@ public class AuthenticationController {
     @PostMapping
     public ResponseEntity<AuthResponse> auth(@RequestBody AuthRequest authRequest){
         return authenticationService.authenticate(authRequest);
+    }
+
+    @PostMapping("/validate")
+    public AuthResponse validate(@RequestParam("token") String token){
+        boolean flag = authenticationService.validate(token);
+        if (!flag){
+            return new AuthResponse();
+        }
+        return AuthResponse.builder()
+                .jwt(token)
+                .build();
+    }
+
+    @PostMapping("/validate2")
+    public boolean validate2(@RequestParam("token") String token){
+        return authenticationService.validate(token);
     }
 }

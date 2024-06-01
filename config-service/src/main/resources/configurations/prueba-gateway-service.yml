@@ -31,13 +31,13 @@ spring:
           uri: http://localhost:8083
           predicates:
             - Path=/api/permit/**
-            - Path=/api/permit-person/**
           filters:
             - name: AuthFilter
         - id: person-service
           uri: http://localhost:8085
           predicates:
             - Path=/api/person/**
+            - Path=/api/permit-person/**
           filters:
             - name: AuthFilter
         - id: security-service
