@@ -56,6 +56,7 @@ public class CategoryAdapter implements CategoryServiceOut {
             }else {
                 return ResponseEntity
                         .ok(new BaseResponse(414,"Not Found Category", Optional.empty()));
+
             }
         }catch (Exception e){
             return null;
@@ -72,7 +73,7 @@ public class CategoryAdapter implements CategoryServiceOut {
                         .ok(new BaseResponse(200,"Success", Optional.of(categoryDto)));
             }else {
                 return ResponseEntity
-                        .ok(new BaseResponse(414,"Empty ategory", Optional.empty()));
+                        .ok(new BaseResponse(414,"Empty Category", Optional.empty()));
             }
 //        }catch (Exception e){
 //            return null;

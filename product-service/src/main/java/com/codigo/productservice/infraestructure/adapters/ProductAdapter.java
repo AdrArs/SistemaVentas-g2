@@ -33,7 +33,7 @@ public class ProductAdapter implements  ProductServiceOut{
             if(!isNull(categoryDto)){
                 if(!categoryDto.getCondicion()){
                     return ResponseEntity
-                            .ok(new BaseResponse(511," Category Inactive", Optional.empty()));
+                            .ok(new BaseResponse(511,"Category Inactive", Optional.empty()));
                 }
                 Product product = Product.builder()
                         .nombre(productRequest.getNombre())
@@ -119,7 +119,7 @@ public class ProductAdapter implements  ProductServiceOut{
         entity.setImagen(productRequest.getImagen());
         entity.setStock(productRequest.getStock());
         entity.setNombre(productRequest.getNombre());
-        entity.setUsuaCreate("USU-MODIF");
+        entity.setUsuaModif("USER-MODIF");
         entity.setDateModif(getTime());
         return entity;
     }
