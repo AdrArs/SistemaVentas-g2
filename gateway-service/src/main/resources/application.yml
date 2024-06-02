@@ -34,6 +34,12 @@ spring:
             - Path=/api/permit-person/**
           filters:
             - name: AuthFilter
+        - id: venta-service
+          uri: http://localhost:8084
+          predicates:
+            - Path=/api/sale/**
+          filters:
+            - name: AuthFilter
         - id: person-service
           uri: http://localhost:8085
           predicates:

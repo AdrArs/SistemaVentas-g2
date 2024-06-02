@@ -17,6 +17,7 @@ public class ConvertProduct {
                 .condicion(product.getCondicion())
                 .imagen(product.getImagen())
                 .descripcion(product.getDescripcion())
+                .precio(product.getPrecio())
                 .nombre(product.getNombre())
                 .idproducto(product.getIdproducto())
                 .usuaCreate(product.getUsuaCreate())

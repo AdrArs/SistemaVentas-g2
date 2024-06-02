@@ -1,5 +1,7 @@
 package com.codigo.personservice.domain.ports.in;
 
+import com.codigo.personservice.domain.aggregates.dto.CustomerDto;
+import com.codigo.personservice.domain.aggregates.dto.OperatorDto;
 import com.codigo.personservice.domain.aggregates.dto.PersonDto;
 import com.codigo.personservice.domain.aggregates.request.PersonRequest;
 import com.codigo.personservice.domain.aggregates.request.SupplierRequest;
@@ -21,5 +23,9 @@ public interface PersonServiceIn {
 //    ResponseEntity<BaseResponse> deleteIn(Long id);
 
     PersonDto getPersonClientIn(Long id);
+
+    OperatorDto getOperatorClientIn(Long id);
+
+    CustomerDto getCustomerClientIn(Long id);
 
 }

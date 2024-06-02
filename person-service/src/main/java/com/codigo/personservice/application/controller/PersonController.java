@@ -1,5 +1,7 @@
 package com.codigo.personservice.application.controller;
 
+import com.codigo.personservice.domain.aggregates.dto.CustomerDto;
+import com.codigo.personservice.domain.aggregates.dto.OperatorDto;
 import com.codigo.personservice.domain.aggregates.dto.PersonDto;
 import com.codigo.personservice.domain.aggregates.request.PersonRequest;
 import com.codigo.personservice.domain.aggregates.request.SupplierRequest;
@@ -69,6 +71,16 @@ public class PersonController {
     @GetMapping("/getPersonClient/{id}")
     public PersonDto getPersonClient(@PathVariable Long id){
         return personServiceIn.getPersonClientIn(id);
+    }
+
+    @GetMapping("/getOperatorClient/{id}")
+    public OperatorDto getOperatorClient(@PathVariable Long id){
+        return personServiceIn.getOperatorClientIn(id);
+    }
+
+    @GetMapping("/getCustomerClient/{id}")
+    public CustomerDto getCustomerClient(@PathVariable Long id){
+        return personServiceIn.getCustomerClientIn(id);
     }
 
 }

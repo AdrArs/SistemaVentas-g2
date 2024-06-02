@@ -15,6 +15,7 @@ public class ProductResponse {
     private String nombre;
     private CategoryDto categoria;
     private Integer stock;
+    private Float precio;
     private String descripcion;
     private String imagen;
     private Boolean condicion;

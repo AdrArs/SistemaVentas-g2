@@ -380,4 +380,32 @@ public class PersonAdapter implements PersonServiceOut {
             return new PersonDto();
         }
     }
+
+    @Override
+    public OperatorDto getOperatorClientOut(Long id) {
+        Optional<Operator> operator = operatorRepository.findById(id);
+        if(operator.isPresent()){
+            PersonDto personDto = modelMapper.map(operator.get().getPersona(),PersonDto.class);
+            return  OperatorDto.builder()
+                    .id(operator.get().getId())
+                    .codEmpleado(operator.get().getCodEmpleado())
+                    .persona(personDto)
+                    .build();
+        }
+        return null;
+    }
+
+    @Override
+    public CustomerDto getCustomerClientOut(Long id) {
+        Optional<Customer> customer = customerRepository.findById(id);
+        if(customer.isPresent()){
+            PersonDto personDto = modelMapper.map(customer.get().getPersona(),PersonDto.class);
+            return  CustomerDto.builder()
+                    .id(customer.get().getId())
+                    .codCliente(customer.get().getCodCliente())
+                    .persona(personDto)
+                    .build();
+        }
+        return null;
+    }
 }

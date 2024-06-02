@@ -1,5 +1,7 @@
 package com.codigo.personservice.domain.impl;
 
+import com.codigo.personservice.domain.aggregates.dto.CustomerDto;
+import com.codigo.personservice.domain.aggregates.dto.OperatorDto;
 import com.codigo.personservice.domain.aggregates.dto.PersonDto;
 import com.codigo.personservice.domain.aggregates.request.PersonRequest;
 import com.codigo.personservice.domain.aggregates.request.SupplierRequest;
@@ -68,5 +70,15 @@ public class PersonServiceImpl implements PersonServiceIn {
     @Override
     public PersonDto getPersonClientIn(Long id) {
         return personServiceOut.getPersonClientOut(id);
+    }
+
+    @Override
+    public OperatorDto getOperatorClientIn(Long id) {
+        return personServiceOut.getOperatorClientOut(id);
+    }
+
+    @Override
+    public CustomerDto getCustomerClientIn(Long id) {
+        return personServiceOut.getCustomerClientOut(id);
     }
 }
