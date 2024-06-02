@@ -21,6 +21,7 @@ public class Product extends Audit {
     private String codigo;
     private String nombre;
     private Integer stock;
+    private Float precio;
     private String descripcion;
     private String imagen;
     private Boolean condicion;

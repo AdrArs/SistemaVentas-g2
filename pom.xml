@@ -28,6 +28,7 @@
 		<module>gateway-service</module>
 		<module>eureka-service</module>
 		<module>config-service</module>
+		<module>venta-service</module>
 	</modules>
 
 	<dependencies>

@@ -33,7 +33,7 @@ public class JWTServiceImpl  implements JWTService {
     public String generateToken(UserDetails userDetails) {
         return Jwts.builder().setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 120000))
+                .setExpiration(new Date(System.currentTimeMillis() + 60000*15))
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

@@ -13,5 +13,6 @@ public class ProductRequest {
     private String nombre;
     private Integer stock;
     private String descripcion;
+    private Float precio;
     private String imagen;
 }

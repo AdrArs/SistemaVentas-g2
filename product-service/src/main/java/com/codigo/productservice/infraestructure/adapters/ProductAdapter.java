@@ -1,6 +1,7 @@
 package com.codigo.productservice.infraestructure.adapters;
 
 import com.codigo.productservice.domain.aggregates.dto.CategoryDto;
+import com.codigo.productservice.domain.aggregates.dto.ProductDto;
 import com.codigo.productservice.domain.aggregates.request.ProductRequest;
 import com.codigo.productservice.domain.aggregates.response.BaseResponse;
 import com.codigo.productservice.domain.aggregates.response.ProductResponse;
@@ -10,11 +11,13 @@ import com.codigo.productservice.infraestructure.dao.ProductRepository;
 import com.codigo.productservice.infraestructure.entity.Product;
 import com.codigo.productservice.infraestructure.mapper.ConvertProduct;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static java.util.Objects.*;
@@ -24,6 +27,7 @@ import static java.util.Objects.*;
 public class ProductAdapter implements  ProductServiceOut{
     private final ProductRepository productRepository;
     private final CategoryClient categoryClient;
+    private final ModelMapper modelMapper;
 
     @Override
     public ResponseEntity<BaseResponse> createOut(ProductRequest productRequest) {
@@ -118,6 +122,7 @@ public class ProductAdapter implements  ProductServiceOut{
         entity.setDescripcion(productRequest.getDescripcion());
         entity.setImagen(productRequest.getImagen());
         entity.setStock(productRequest.getStock());
+        entity.setPrecio(productRequest.getPrecio());
         entity.setNombre(productRequest.getNombre());
         entity.setUsuaCreate("USU-MODIF");
         entity.setDateModif(getTime());
@@ -140,6 +145,43 @@ public class ProductAdapter implements  ProductServiceOut{
             }
         }catch (Exception e){
             return null;
+        }
+    }
+
+    @Override
+    public ProductDto getByIdOut(Long id) {
+        try{
+            Optional<Product> product = productRepository.findById(id);
+            if (product.isPresent()){
+                return modelMapper.map(product.get(),ProductDto.class);
+            }
+            return new ProductDto();
+        }catch (Exception e){
+            return null;
+        }
+    }
+
+    @Override
+    public void updateStockOut(String valor) {
+        String valores[] = valor.split("-");
+        Optional<Product> op = productRepository.findById(Long.parseLong(valores[0]));
+        if (op.isPresent()){
+            Product product = op.get();
+            Integer cantidad = Integer.parseInt(valores[1]);
+            product.setStock(product.getStock() - cantidad);
+            productRepository.save(product);
+        }
+    }
+
+    @Override
+    public void resetStockOut(String valor) {
+        String valores[] = valor.split("-");
+        Optional<Product> op = productRepository.findById(Long.parseLong(valores[0]));
+        if (op.isPresent()){
+            Product product = op.get();
+            Integer cantidad = Integer.parseInt(valores[1]);
+            product.setStock(product.getStock() + cantidad);
+            productRepository.save(product);
         }
     }
 

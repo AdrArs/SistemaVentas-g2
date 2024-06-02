@@ -1,8 +1,11 @@
 package com.codigo.productservice.domain.ports.out;
 
+import com.codigo.productservice.domain.aggregates.dto.ProductDto;
 import com.codigo.productservice.domain.aggregates.request.ProductRequest;
 import com.codigo.productservice.domain.aggregates.response.BaseResponse;
 import org.springframework.http.ResponseEntity;
+
+import java.util.Map;
 
 public interface ProductServiceOut {
     ResponseEntity<BaseResponse> createOut(ProductRequest productRequest);
@@ -10,4 +13,8 @@ public interface ProductServiceOut {
     ResponseEntity<BaseResponse> getAllOut();
     ResponseEntity<BaseResponse> updateOut(Long id, ProductRequest productRequest);
     ResponseEntity<BaseResponse> deleteOut(Long id);
+    ProductDto getByIdOut(Long id);
+
+    void updateStockOut(String valor);
+    void resetStockOut(String valor);
 }

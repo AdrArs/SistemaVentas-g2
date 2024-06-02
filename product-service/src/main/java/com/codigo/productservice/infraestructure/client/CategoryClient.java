@@ -4,12 +4,9 @@ import com.codigo.productservice.domain.aggregates.dto.CategoryDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(name = "category-service",url = "http://localhost:8081/api/category/")
 public interface CategoryClient {
     @GetMapping("/getCategoryClient/{id}")
     CategoryDto getCategory(@PathVariable Long id);
-
 }
