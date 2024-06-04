@@ -1,7 +1,5 @@
 package com.codigo.categoryservice.domain.aggregates.dto;
 
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import lombok.*;
 
 import java.sql.Timestamp;

@@ -1,6 +1,5 @@
 package com.codigo.personservice.infraestructure.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,7 +15,6 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String codCliente;
-//    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "idpersona")
     private Person persona;

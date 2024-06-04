@@ -25,7 +25,7 @@ public class CategoryAdapter implements CategoryServiceOut {
         boolean exists = categoryRespository.existsByNombre(categoryRequest.getNombre());
         if(exists){
             return ResponseEntity
-                    .ok(new BaseResponse(410,"Category exists", Optional.empty()));
+                    .ok(new BaseResponse<>(410,"Category exists", Optional.empty()));
         }else{
             Category category = Category.builder()
                     .nombre(categoryRequest.getNombre())
@@ -37,7 +37,7 @@ public class CategoryAdapter implements CategoryServiceOut {
             try{
                 CategoryDto categoryDto = ConvertCategoryToDto.convertToDto(categoryRespository.save(category));
                 return ResponseEntity
-                        .ok(new BaseResponse(200,"Success", Optional.of(categoryDto)));
+                        .ok(new BaseResponse<>(200,"Success", Optional.of(categoryDto)));
             }catch (Exception e){
 //                controlar error generado por desconexion en bd
                 return null;
@@ -52,10 +52,10 @@ public class CategoryAdapter implements CategoryServiceOut {
             if(category.isPresent()){
                 CategoryDto categoryDto = ConvertCategoryToDto.convertToDto(category.get());
                 return ResponseEntity
-                        .ok(new BaseResponse(200,"Success", Optional.of(categoryDto)));
+                        .ok(new BaseResponse<>(200,"Success", Optional.of(categoryDto)));
             }else {
                 return ResponseEntity
-                        .ok(new BaseResponse(414,"Not Found Category", Optional.empty()));
+                        .ok(new BaseResponse<>(414,"Not Found Category", Optional.empty()));
 
             }
         }catch (Exception e){
@@ -65,19 +65,15 @@ public class CategoryAdapter implements CategoryServiceOut {
 
     @Override
     public ResponseEntity<BaseResponse> getAllOut() {
-//        try {
             List<Category> category = categoryRespository.findAll();
             if(!category.isEmpty()){
                 List<CategoryDto> categoryDto = ConvertCategoryToDto.convertListToDto(category);
                 return ResponseEntity
-                        .ok(new BaseResponse(200,"Success", Optional.of(categoryDto)));
+                        .ok(new BaseResponse<>(200,"Success", Optional.of(categoryDto)));
             }else {
                 return ResponseEntity
-                        .ok(new BaseResponse(414,"Empty Category", Optional.empty()));
+                        .ok(new BaseResponse<>(414,"Empty Category", Optional.empty()));
             }
-//        }catch (Exception e){
-//            return null;
-//        }
     }
 
     @Override
@@ -92,10 +88,10 @@ public class CategoryAdapter implements CategoryServiceOut {
                 c.setDateModif(getTime());
                 CategoryDto categoryDto = ConvertCategoryToDto.convertToDto(categoryRespository.save(c));
                 return ResponseEntity
-                        .ok(new BaseResponse(200,"Success", Optional.of(categoryDto)));
+                        .ok(new BaseResponse<>(200,"Success", Optional.of(categoryDto)));
             }else {
                 return ResponseEntity
-                        .ok(new BaseResponse(414,"Not Found Category", Optional.empty()));
+                        .ok(new BaseResponse<>(414,"Not Found Category", Optional.empty()));
             }
         }catch (Exception e){
             return null;
@@ -113,10 +109,10 @@ public class CategoryAdapter implements CategoryServiceOut {
                 c.setDateDelet(getTime());
                 CategoryDto categoryDto = ConvertCategoryToDto.convertToDto(categoryRespository.save(c));
                 return ResponseEntity
-                        .ok(new BaseResponse(200,"Success", Optional.of(categoryDto)));
+                        .ok(new BaseResponse<>(200,"Success", Optional.of(categoryDto)));
             }else{
                 return ResponseEntity
-                        .ok(new BaseResponse(414,"Not Found Category", Optional.empty()));
+                        .ok(new BaseResponse<>(414,"Not Found Category", Optional.empty()));
             }
         }catch (Exception e){
             return null;
@@ -129,8 +125,7 @@ public class CategoryAdapter implements CategoryServiceOut {
         try{
             Optional<Category> category = categoryRespository.findById(id);
             if (category.isPresent()){
-                CategoryDto categoryDto = ConvertCategoryToDto.convertToDto(category.get());
-                return categoryDto;
+                 return  ConvertCategoryToDto.convertToDto(category.get());
             }
             return new CategoryDto();
         }catch (Exception e){

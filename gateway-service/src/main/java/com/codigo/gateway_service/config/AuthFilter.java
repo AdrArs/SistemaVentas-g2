@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.util.Objects;
+
 @Component
 public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> {
 
@@ -28,7 +30,7 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
                 return onError(exchange, HttpStatus.BAD_REQUEST);
             }
 
-            String tokenHeader = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
+            String tokenHeader = Objects.requireNonNull(exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION)).get(0);
             String[] chunks = tokenHeader.split(" ");
             if (chunks.length != 2 || !chunks[0].equals("Bearer")) {
                 return onError(exchange, HttpStatus.BAD_REQUEST);
@@ -43,7 +45,7 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
                     return onError(exchange, HttpStatus.SERVICE_UNAVAILABLE);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println(e.getMessage());
                 return onError(exchange, HttpStatus.SERVICE_UNAVAILABLE);
             }
         };

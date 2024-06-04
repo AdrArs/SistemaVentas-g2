@@ -6,7 +6,7 @@
 		<groupId>com.codigo</groupId>
 		<artifactId>microservices</artifactId>
 		<version>1.0.0</version>
-		<relativePath/> <!-- lookup parent from repository -->
+<!--		<relativePath/> &lt;!&ndash; lookup parent from repository &ndash;&gt;-->
 	</parent>
 	<artifactId>eureka-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>

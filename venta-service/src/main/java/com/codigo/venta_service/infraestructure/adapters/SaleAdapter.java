@@ -40,12 +40,12 @@ public class SaleAdapter implements SaleServiceOut {
         CustomerDto customerDto = personClient.getCustomerClient(saleRequest.getIdCliente());
         if (isNull(customerDto)){
             return ResponseEntity
-                    .ok(new BaseResponse(510,"Not Found Customer", Optional.empty()));
+                    .ok(new BaseResponse<>(510,"Not Found Customer", Optional.empty()));
         }
         OperatorDto operatorDto = personClient.getOperatorClient(saleRequest.getIdVendedor());
         if (isNull(operatorDto)){
             return ResponseEntity
-                    .ok(new BaseResponse(511,"Not Found Operator", Optional.empty()));
+                    .ok(new BaseResponse<>(511,"Not Found Operator", Optional.empty()));
         }
 
         List<SaleDetail> list = new ArrayList<>();
@@ -67,7 +67,7 @@ public class SaleAdapter implements SaleServiceOut {
             Float desc = (float) (descuento*0.01);
             Float precioInicial = cantidad * product.getPrecio();
             Float valorDescuento = precioInicial * desc;
-            Float subTotal = precioInicial - valorDescuento;
+            float subTotal = precioInicial - valorDescuento;
             detail = SaleDetail.builder()
                     .idproducto(idProducto)
                     .cantidad(cantidad)
@@ -106,7 +106,7 @@ public class SaleAdapter implements SaleServiceOut {
         SaleResponse response = modelMapper.map(dto,SaleResponse.class);
         response.setSaleDetailDtoList(saleDetailDtoList);
         return ResponseEntity
-                .ok(new BaseResponse(200,"Success", Optional.of(response)));
+                .ok(new BaseResponse<>(200,"Success", Optional.of(response)));
     }
 
     @Override
@@ -121,9 +121,9 @@ public class SaleAdapter implements SaleServiceOut {
                     .collect(Collectors.toList());
             SaleResponse response = modelMapper.map(saleDto,SaleResponse.class);
             response.setSaleDetailDtoList(saleDetailDtos);
-            return ResponseEntity.ok(new BaseResponse(200, "Success", Optional.of(response)));
+            return ResponseEntity.ok(new BaseResponse<>(200, "Success", Optional.of(response)));
         } else {
-            return ResponseEntity.ok(new BaseResponse(404, "Sale not found", Optional.empty()));
+            return ResponseEntity.ok(new BaseResponse<>(404, "Sale not found", Optional.empty()));
         }
     }
 
@@ -132,7 +132,7 @@ public class SaleAdapter implements SaleServiceOut {
         List<Sale> sales = saleRepository.findAll();
 
         if (sales.isEmpty()){
-            return ResponseEntity.ok(new BaseResponse(404, "Sale Empty", Optional.empty()));
+            return ResponseEntity.ok(new BaseResponse<>(404, "Sale Empty", Optional.empty()));
         }
         List<SaleResponse> saleResponses = new ArrayList<>();
         SaleResponse response = null;
@@ -146,27 +146,27 @@ public class SaleAdapter implements SaleServiceOut {
             response.setSaleDetailDtoList(saleDetailDtos);
             saleResponses.add(response);
         }
-        return ResponseEntity.ok(new BaseResponse(200, "Success", Optional.of(saleResponses)));
+        return ResponseEntity.ok(new BaseResponse<>(200, "Success", Optional.of(saleResponses)));
     }
 
     @Transactional
     @Override
     public ResponseEntity<BaseResponse> updateOut(Long id, SaleRequest saleRequest) {
         Optional<Sale> optionalSale = saleRepository.findById(id);
-        if (!optionalSale.isPresent()) {
-            return ResponseEntity.ok(new BaseResponse(404, "Sale not found", Optional.empty()));
+        if (optionalSale.isEmpty()) {
+            return ResponseEntity.ok(new BaseResponse<>(404, "Sale not found", Optional.empty()));
         }
 
         Sale existingSale = optionalSale.get();
 
         CustomerDto customerDto = personClient.getCustomerClient(saleRequest.getIdCliente());
         if (isNull(customerDto)) {
-            return ResponseEntity.ok(new BaseResponse(510, "Not Found Customer", Optional.empty()));
+            return ResponseEntity.ok(new BaseResponse<>(510, "Not Found Customer", Optional.empty()));
         }
 
         OperatorDto operatorDto = personClient.getOperatorClient(saleRequest.getIdVendedor());
         if (isNull(operatorDto)) {
-            return ResponseEntity.ok(new BaseResponse(511, "Not Found Operator", Optional.empty()));
+            return ResponseEntity.ok(new BaseResponse<>(511, "Not Found Operator", Optional.empty()));
         }
 
 
@@ -198,7 +198,7 @@ public class SaleAdapter implements SaleServiceOut {
             Float desc = descuento * 0.01f;
             Float precioInicial = cantidad * product.getPrecio();
             Float valorDescuento = precioInicial * desc;
-            Float subTotal = precioInicial - valorDescuento;
+            float subTotal = precioInicial - valorDescuento;
             detail = SaleDetail.builder()
                     .idproducto(idProducto)
                     .cantidad(cantidad)
@@ -249,7 +249,7 @@ public class SaleAdapter implements SaleServiceOut {
         Optional<Sale> optionalSale = saleRepository.findById(id);
         if (optionalSale.isPresent()) {
             if (optionalSale.get().getEstado().equalsIgnoreCase("CANCELADO")){
-                return ResponseEntity.ok(new BaseResponse(404, "La venta ya se encuentra cancelada", Optional.empty()));
+                return ResponseEntity.ok(new BaseResponse<>(404, "La venta ya se encuentra cancelada", Optional.empty()));
             }
             optionalSale.get().setEstado("CANCELADO");
             List<SaleDetail> saleDetails = saleDetailRepository.findByVenta(optionalSale.get());
@@ -257,9 +257,9 @@ public class SaleAdapter implements SaleServiceOut {
                 productClient.resetStock(detail.getIdproducto()+"-"+detail.getCantidad());
             }
             SaleDto saleDto = modelMapper.map(saleRepository.save(optionalSale.get()),SaleDto.class);
-            return ResponseEntity.ok(new BaseResponse(200, "Sale deleted successfully", Optional.of(saleDto)));
+            return ResponseEntity.ok(new BaseResponse<>(200, "Sale deleted successfully", Optional.of(saleDto)));
         } else {
-            return ResponseEntity.ok(new BaseResponse(404, "Sale not found", Optional.empty()));
+            return ResponseEntity.ok(new BaseResponse<>(404, "Sale not found", Optional.empty()));
         }
     }
 

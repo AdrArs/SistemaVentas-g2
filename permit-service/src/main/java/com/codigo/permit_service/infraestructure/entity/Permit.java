@@ -4,7 +4,6 @@ import com.codigo.permit_service.infraestructure.entity.audit.Audit;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Set;
 
 @Entity
 @Table(name = "permiso")
@@ -18,6 +17,4 @@ public class Permit extends Audit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idpermiso;
     private String permiso;
-//    @OneToMany(mappedBy = "permiso")
-//    private Set<PermitPerson> personas;
 }

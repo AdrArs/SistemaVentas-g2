@@ -1,6 +1,5 @@
 package com.codigo.permit_service.infraestructure.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,8 +20,4 @@ public class PermitPerson {
 
     private Long permisoId;
 
-////    @JsonIgnore
-//    @ManyToOne
-//    @JoinColumn(name = "permiso_id")
-//    private Permit permiso;
 }

@@ -1,7 +1,6 @@
 package com.codigo.permit_service.application.controller;
 
 import com.codigo.permit_service.domain.aggregates.request.PermitPersonRequest;
-import com.codigo.permit_service.domain.aggregates.request.PermitRequest;
 import com.codigo.permit_service.domain.aggregates.response.BaseResponse;
 import com.codigo.permit_service.domain.ports.in.PermitPersonIn;
 import lombok.RequiredArgsConstructor;

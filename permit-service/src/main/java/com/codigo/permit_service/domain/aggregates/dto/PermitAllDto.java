@@ -18,5 +18,4 @@ public class PermitAllDto {
     private Timestamp dateModif;
     private String usuaDelet;
     private Timestamp dateDelet;
-//    private Set<PermitPerson> personas;
 }

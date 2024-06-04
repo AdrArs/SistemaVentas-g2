@@ -20,7 +20,6 @@ public interface PersonServiceIn {
     ResponseEntity<BaseResponse> getAllOperatorIn();
     
     ResponseEntity<BaseResponse> updateCustomerOrOperatorIn(Long id,PersonRequest personRequest, String tipo);
-//    ResponseEntity<BaseResponse> deleteIn(Long id);
 
     PersonDto getPersonClientIn(Long id);
 

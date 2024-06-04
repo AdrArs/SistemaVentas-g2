@@ -20,8 +20,4 @@ public class PermitPerson {
 
     private Long permisoId;
 
-////    @JsonIgnore
-//    @ManyToOne
-//    @JoinColumn(name = "permiso_id")
-//    private Permit permiso;
 }

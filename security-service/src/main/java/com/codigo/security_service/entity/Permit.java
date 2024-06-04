@@ -16,6 +16,4 @@ public class Permit extends Audit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idpermiso;
     private String permiso;
-//    @OneToMany(mappedBy = "permiso")
-//    private Set<PermitPerson> personas;
 }

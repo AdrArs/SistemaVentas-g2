@@ -1,6 +1,5 @@
 package com.codigo.venta_service.infraestructure.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 

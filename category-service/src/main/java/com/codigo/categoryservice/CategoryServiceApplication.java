@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication
 @EnableFeignClients("com.codigo.*")
 @EnableJpaRepositories("com.codigo")
-@ComponentScan("com.codigo.*")
+@ComponentScan("com.codigo")
 @EntityScan("com.codigo.*")
 @EnableDiscoveryClient
 public class CategoryServiceApplication {

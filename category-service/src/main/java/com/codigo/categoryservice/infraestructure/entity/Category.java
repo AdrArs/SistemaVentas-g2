@@ -1,6 +1,5 @@
 package com.codigo.categoryservice.infraestructure.entity;
 
-import com.codigo.categoryservice.infraestructure.entity.audit.Audit;
 import jakarta.persistence.*;
 import lombok.*;
 

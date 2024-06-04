@@ -15,8 +15,6 @@ public class Product extends Audit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idproducto;
-//    @ManyToOne
-//    @JoinColumn(name = "idcategoria")
     private Long idcategoria;
     private String codigo;
     private String nombre;

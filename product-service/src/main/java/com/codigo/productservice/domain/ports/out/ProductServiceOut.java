@@ -5,7 +5,6 @@ import com.codigo.productservice.domain.aggregates.request.ProductRequest;
 import com.codigo.productservice.domain.aggregates.response.BaseResponse;
 import org.springframework.http.ResponseEntity;
 
-import java.util.Map;
 
 public interface ProductServiceOut {
     ResponseEntity<BaseResponse> createOut(ProductRequest productRequest);

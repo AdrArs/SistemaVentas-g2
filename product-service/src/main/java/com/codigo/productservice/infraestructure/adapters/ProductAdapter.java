@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import static java.util.Objects.*;
@@ -31,13 +30,12 @@ public class ProductAdapter implements  ProductServiceOut{
 
     @Override
     public ResponseEntity<BaseResponse> createOut(ProductRequest productRequest) {
-//        Como se maneja error en Feign
         try {
             CategoryDto categoryDto = categoryClient.getCategory(productRequest.getCategoria());
             if(!isNull(categoryDto)){
                 if(!categoryDto.getCondicion()){
                     return ResponseEntity
-                            .ok(new BaseResponse(511,"Category Inactive", Optional.empty()));
+                            .ok(new BaseResponse<>(511,"Category Inactive", Optional.empty()));
                 }
                 Product product = Product.builder()
                         .nombre(productRequest.getNombre())
@@ -54,7 +52,7 @@ public class ProductAdapter implements  ProductServiceOut{
                 return ResponseEntity.ok(new BaseResponse<>(200,"Success", Optional.of(productResponse)));
             }
             return ResponseEntity
-                    .ok(new BaseResponse(510,"Not Found Category", Optional.empty()));
+                    .ok(new BaseResponse<>(510,"Not Found Category", Optional.empty()));
         }catch (Exception e){
             return null;
         }
@@ -70,7 +68,7 @@ public class ProductAdapter implements  ProductServiceOut{
                 return ResponseEntity.ok(new BaseResponse<>(200,"Success", Optional.of(productResponse)));
             }
             return ResponseEntity
-                    .ok(new BaseResponse(510,"Not Found Category", Optional.empty()));
+                    .ok(new BaseResponse<>(510,"Not Found Category", Optional.empty()));
         }catch (Exception e){
             return null;
         }
@@ -90,7 +88,7 @@ public class ProductAdapter implements  ProductServiceOut{
                 return ResponseEntity.ok(new BaseResponse<>(200,"Success", Optional.of(productResponse)));
             }
             return ResponseEntity
-                    .ok(new BaseResponse(510,"Not Found Category", Optional.empty()));
+                    .ok(new BaseResponse<>(510,"Not Found Category", Optional.empty()));
         }catch (Exception e){
             return null;
         }
@@ -100,8 +98,6 @@ public class ProductAdapter implements  ProductServiceOut{
     public ResponseEntity<BaseResponse> updateOut(Long id, ProductRequest productRequest) {
         try{
             Optional<Product> product = productRepository.findById(id);
-//            VALIDAR QUE LA CATEGORIA SEA CORRECTA
-//                    VALIDAR QUE NO SE REPITA EL CODIGO
             if(product.isPresent()){
                 Product entity = getProduct(productRequest, product);
                 CategoryDto categoryDto = categoryClient.getCategory(productRequest.getCategoria());
@@ -109,7 +105,7 @@ public class ProductAdapter implements  ProductServiceOut{
                 return ResponseEntity.ok(new BaseResponse<>(200,"Success", Optional.of(productResponse)));
             }
             return ResponseEntity
-                    .ok(new BaseResponse(510,"Not Found Category", Optional.empty()));
+                    .ok(new BaseResponse<>(510,"Not Found Category", Optional.empty()));
         }catch (Exception e){
             return null;
         }
@@ -141,7 +137,7 @@ public class ProductAdapter implements  ProductServiceOut{
                 return ResponseEntity.ok(new BaseResponse<>(200,"Success", Optional.of(productResponse)));
             }else{
                 return ResponseEntity
-                        .ok(new BaseResponse(510,"Not Found Category", Optional.empty()));
+                        .ok(new BaseResponse<>(510,"Not Found Category", Optional.empty()));
             }
         }catch (Exception e){
             return null;
@@ -163,7 +159,7 @@ public class ProductAdapter implements  ProductServiceOut{
 
     @Override
     public void updateStockOut(String valor) {
-        String valores[] = valor.split("-");
+        String[] valores = valor.split("-");
         Optional<Product> op = productRepository.findById(Long.parseLong(valores[0]));
         if (op.isPresent()){
             Product product = op.get();
@@ -175,7 +171,7 @@ public class ProductAdapter implements  ProductServiceOut{
 
     @Override
     public void resetStockOut(String valor) {
-        String valores[] = valor.split("-");
+        String[] valores = valor.split("-");
         Optional<Product> op = productRepository.findById(Long.parseLong(valores[0]));
         if (op.isPresent()){
             Product product = op.get();

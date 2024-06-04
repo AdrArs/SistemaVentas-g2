@@ -17,7 +17,6 @@ public class PersonDto {
     private String direccion;
     private String telefono;
     private String correo;
-//    private String clave;
     private boolean estado;
     private String usuaCreate;
     private Timestamp dateCreate;

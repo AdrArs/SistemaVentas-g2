@@ -7,7 +7,7 @@ spring:
   datasource:
     url:  jdbc:postgresql://localhost:5432/ventas
     username: postgres
-    password: admin
+    password: postgres
   data:
     jpa:
       repositories:

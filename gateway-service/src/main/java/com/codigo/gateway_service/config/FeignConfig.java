@@ -12,9 +12,7 @@ import feign.codec.ErrorDecoder;
 import org.springframework.cloud.openfeign.support.SpringDecoder;
 import org.springframework.cloud.openfeign.support.SpringEncoder;
 import org.springframework.beans.factory.ObjectFactory;
-import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.cloud.openfeign.support.ResponseEntityDecoder;
-import org.springframework.cloud.openfeign.support.SpringEncoder;
 
 import java.io.IOException;
 
@@ -57,7 +55,7 @@ public class FeignConfig {
                     try {
                         responseBody = Util.toString(response.body().asReader());
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        System.out.println(e.getMessage());
                     }
                     return new RuntimeException("Feign error: 403 Forbidden - " + responseBody);
                 } else {

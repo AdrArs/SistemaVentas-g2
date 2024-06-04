@@ -29,11 +29,11 @@ public class PermitAdapter implements PermitServiceOut {
         Permit permit = getPermit(permitRequest,"CREATE",Optional.empty());
         if (isNull(permit)){
             return ResponseEntity
-                    .ok(new BaseResponse(414,"Not Found Permit", Optional.empty()));
+                    .ok(new BaseResponse<>(414,"Not Found Permit", Optional.empty()));
         }
         PermitAllDto permitDto = modelMapper.map(permitRepository.save(permit), PermitAllDto.class);
         return ResponseEntity
-                .ok(new BaseResponse(200,"Success", Optional.of(permitDto)));
+                .ok(new BaseResponse<>(200,"Success", Optional.of(permitDto)));
     }
 
     private Permit getPermit(PermitRequest permitRequest, String action , Optional<Permit> op) {
@@ -69,12 +69,12 @@ public class PermitAdapter implements PermitServiceOut {
         Optional<Permit> op = permitRepository.findById(id);
         if (op.isEmpty()){
             return ResponseEntity
-                    .ok(new BaseResponse(414,"Not found Permit", Optional.empty()));
+                    .ok(new BaseResponse<>(414,"Not found Permit", Optional.empty()));
         }
         Permit permit = op.get();
         PermitAllDto permitDto = modelMapper.map(permit, PermitAllDto.class);
         return ResponseEntity
-                .ok(new BaseResponse(200,"Success", Optional.of(permitDto)));
+                .ok(new BaseResponse<>(200,"Success", Optional.of(permitDto)));
     }
 
     @Override
@@ -82,13 +82,13 @@ public class PermitAdapter implements PermitServiceOut {
         List<Permit> list = permitRepository.findAll();
         if (list.isEmpty()){
             return ResponseEntity
-                    .ok(new BaseResponse(414,"Not Content", Optional.empty()));
+                    .ok(new BaseResponse<>(414,"Not Content", Optional.empty()));
         }
         List<PermitAllDto> permitDtos = list.stream()
                 .map(l -> modelMapper.map(l, PermitAllDto.class))
                 .toList();
         return ResponseEntity
-                .ok(new BaseResponse(200,"Success", Optional.of(permitDtos)));
+                .ok(new BaseResponse<>(200,"Success", Optional.of(permitDtos)));
     }
 
     @Override
@@ -96,16 +96,16 @@ public class PermitAdapter implements PermitServiceOut {
         Optional<Permit> op = permitRepository.findById(id);
         if(op.isEmpty()){
             return ResponseEntity
-                    .ok(new BaseResponse(414,"Not found Permit", Optional.empty()));
+                    .ok(new BaseResponse<>(414,"Not found Permit", Optional.empty()));
         }
         Permit permit = getPermit(permitRequest,"UPDATE",op);
         if (isNull(permit)){
             return ResponseEntity
-                    .ok(new BaseResponse(414,"Error in Permit", Optional.empty()));
+                    .ok(new BaseResponse<>(414,"Error in Permit", Optional.empty()));
         }
         PermitAllDto permitDto = modelMapper.map(permitRepository.save(permit), PermitAllDto.class);
         return ResponseEntity
-                .ok(new BaseResponse(200,"Success", Optional.of(permitDto)));
+                .ok(new BaseResponse<>(200,"Success", Optional.of(permitDto)));
     }
 
     private Timestamp getTime(){

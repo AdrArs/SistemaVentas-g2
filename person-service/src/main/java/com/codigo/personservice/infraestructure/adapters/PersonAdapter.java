@@ -54,12 +54,12 @@ public class PersonAdapter implements PersonServiceOut {
         boolean exists = personRepository.existsByNumeroDocumento(personRequest.getNumDoc());
         if(exists){
             return ResponseEntity
-                    .ok(new BaseResponse(410,"NumDoc exists", Optional.empty()));
+                    .ok(new BaseResponse<>(410,"NumDoc exists", Optional.empty()));
         }else{
             Person person = getPerson(personRequest,Constant.ACTION_CREATE,null);
             if(isNull(person)){
                 return ResponseEntity
-                        .ok(new BaseResponse(550,"Person invalid", Optional.empty()));
+                        .ok(new BaseResponse<>(550,"Person invalid", Optional.empty()));
             }
             try{
                 person = personRepository.save(person);
@@ -74,7 +74,7 @@ public class PersonAdapter implements PersonServiceOut {
                         CustomerResponseDto customerResponseDto = modelMapper.map(personDto,CustomerResponseDto.class);
                         customerResponseDto.setCodCliente(customerDto.getCodCliente());
                         return ResponseEntity
-                                .ok(new BaseResponse(200,"Success", Optional.of(customerResponseDto)));
+                                .ok(new BaseResponse<>(200,"Success", Optional.of(customerResponseDto)));
                     case "OPERATOR":
                         Operator operator = Operator.builder()
                                 .codEmpleado(operatorRepository.generateCodOperator())
@@ -84,30 +84,27 @@ public class PersonAdapter implements PersonServiceOut {
                         OperatorResponseDto operatorResponseDto = modelMapper.map(personDto,OperatorResponseDto.class);
                         operatorResponseDto.setCodEmpleado(operatorDto.getCodEmpleado());
                         return ResponseEntity
-                                .ok(new BaseResponse(200,"Success", Optional.of(operatorResponseDto)));
+                                .ok(new BaseResponse<>(200,"Success", Optional.of(operatorResponseDto)));
                     default:
                         return ResponseEntity
-                                .ok(new BaseResponse(550,"Person invalid", Optional.empty()));
+                                .ok(new BaseResponse<>(550,"Person invalid", Optional.empty()));
                 }
             }catch (Exception e){
-//                controlar error generado por desconexion en bd
+                System.out.println(e.getMessage());
                 return null;
             }
         }
     }
 
     private Person getPerson(PersonRequest personRequest , String action , Long id) {
-//        Evaluar caso en donde se envia dni invalido
         ReniecDto reniecDto = getExecReniec(personRequest.getNumDoc());
         Person person = Person.builder()
                 .nombre(reniecDto.getNombres()+" "+reniecDto.getApellidoPaterno()+" "+reniecDto.getApellidoMaterno())
                 .tipoDocumento(reniecDto.getTipoDocumento())
                 .numeroDocumento(reniecDto.getNumeroDocumento())
-//                .correo(reniecDto.getApellidoPaterno().substring(0,2).toLowerCase()+reniecDto.getNumeroDocumento()+"@example.com")
                 .correo(personRequest.getCorreo())
                 .estado(true)
                 .clave(new BCryptPasswordEncoder().encode(personRequest.getClave()))
-//                .clave(new BCryptPasswordEncoder().encode("123"))
                 .direccion(personRequest.getDirecion())
                 .telefono(personRequest.getTelefono())
                 .build();
@@ -156,28 +153,28 @@ public class PersonAdapter implements PersonServiceOut {
                         Optional<Supplier> supplier = supplierRepository.findByPersonaIdpersona(idPersona);
                         if(supplier.isEmpty()){
                             return ResponseEntity
-                                    .ok(new BaseResponse(550,"NumDoc invalid", Optional.empty()));
+                                    .ok(new BaseResponse<>(550,"NumDoc invalid", Optional.empty()));
                         }else {
                             SupplierResponseDto responseDto = modelMapper.map(person.get(), SupplierResponseDto.class);
                             responseDto.setEmpresa(supplier.get().getEmpresa());
                             return ResponseEntity
-                                    .ok(new BaseResponse(200,"Success", Optional.of(responseDto)));
+                                    .ok(new BaseResponse<>(200,"Success", Optional.of(responseDto)));
                         }
                     }else {
                         OperatorResponseDto responseDto = modelMapper.map(person.get(),OperatorResponseDto.class);
                         responseDto.setCodEmpleado(operator.get().getCodEmpleado());
                         return ResponseEntity
-                                .ok(new BaseResponse(200,"Success", Optional.of(responseDto)));
+                                .ok(new BaseResponse<>(200,"Success", Optional.of(responseDto)));
                     }
                 }else{
                     CustomerResponseDto responseDto = modelMapper.map(person.get(),CustomerResponseDto.class);
                     responseDto.setCodCliente(customer.get().getCodCliente());
                     return ResponseEntity
-                            .ok(new BaseResponse(200,"Success", Optional.of(responseDto)));
+                            .ok(new BaseResponse<>(200,"Success", Optional.of(responseDto)));
                 }
             }else {
                 return ResponseEntity
-                        .ok(new BaseResponse(550,"NumDoc NotExist", Optional.empty()));
+                        .ok(new BaseResponse<>(550,"NumDoc NotExist", Optional.empty()));
             }
     }
 
@@ -186,7 +183,7 @@ public class PersonAdapter implements PersonServiceOut {
         List<Supplier> list = supplierRepository.findAll();
         if (list.isEmpty())
             return ResponseEntity
-                    .ok(new BaseResponse(550,"Lista vacía", Optional.empty()));
+                    .ok(new BaseResponse<>(550,"Lista vacía", Optional.empty()));
 
         List<SupplierResponseDto> supplierResponseDtoList = list.stream()
                 .map(l -> {
@@ -197,7 +194,7 @@ public class PersonAdapter implements PersonServiceOut {
                 })
                 .toList();
         return ResponseEntity
-                .ok(new BaseResponse(200,"Success", Optional.of(supplierResponseDtoList)));
+                .ok(new BaseResponse<>(200,"Success", Optional.of(supplierResponseDtoList)));
     }
 
     @Override
@@ -205,7 +202,7 @@ public class PersonAdapter implements PersonServiceOut {
         List<Customer> list = customerRepository.findAll();
         if (list.isEmpty())
             return ResponseEntity
-                    .ok(new BaseResponse(550,"Lista vacía", Optional.empty()));
+                    .ok(new BaseResponse<>(550,"Lista vacía", Optional.empty()));
 
         List<CustomerResponseDto> customerResponseDtoList = list.stream()
                 .map(l -> {
@@ -216,7 +213,7 @@ public class PersonAdapter implements PersonServiceOut {
                 })
                 .toList();
         return ResponseEntity
-                .ok(new BaseResponse(200,"Success", Optional.of(customerResponseDtoList)));
+                .ok(new BaseResponse<>(200,"Success", Optional.of(customerResponseDtoList)));
     }
 
     @Override
@@ -224,7 +221,7 @@ public class PersonAdapter implements PersonServiceOut {
         List<Operator> list = operatorRepository.findAll();
         if (list.isEmpty())
             return ResponseEntity
-                    .ok(new BaseResponse(550,"Lista vacía", Optional.empty()));
+                    .ok(new BaseResponse<>(550,"Lista vacía", Optional.empty()));
 
         List<OperatorResponseDto> operatorResponseDtoList = list.stream()
                 .map(l -> {
@@ -244,7 +241,7 @@ public class PersonAdapter implements PersonServiceOut {
             if(!isNull(redisInfo)){
                 CustomerResponseDto customerResponseDto = Util.convertJsonToDto(redisInfo,CustomerResponseDto.class);
                 return ResponseEntity
-                        .ok(new BaseResponse(200,"Success", Optional.of(customerResponseDto)));
+                        .ok(new BaseResponse<>(200,"Success", Optional.of(customerResponseDto)));
             }
             Optional<Person> person = personRepository.findByNumeroDocumento(num);
             if (person.isPresent()){
@@ -259,11 +256,11 @@ public class PersonAdapter implements PersonServiceOut {
                     String json = Util.convertDtoToJson(responseDto);
                     redisService.saveInRedis(Constant.REDIS_KEY_OBTENERCUSTOMER+num,json,10);
                     return ResponseEntity
-                            .ok(new BaseResponse(200,"Success", Optional.of(responseDto)));
+                            .ok(new BaseResponse<>(200,"Success", Optional.of(responseDto)));
                 }
             }else {
                 return ResponseEntity
-                        .ok(new BaseResponse(550,"NumDoc NotExists", Optional.empty()));
+                        .ok(new BaseResponse<>(550,"NumDoc NotExists", Optional.empty()));
             }
     }
 
@@ -273,7 +270,7 @@ public class PersonAdapter implements PersonServiceOut {
             if(!isNull(redisInfo)){
                 OperatorResponseDto operatorResponseDto = Util.convertJsonToDto(redisInfo,OperatorResponseDto.class);
                 return ResponseEntity
-                        .ok(new BaseResponse(200,"Success", Optional.of(operatorResponseDto)));
+                        .ok(new BaseResponse<>(200,"Success", Optional.of(operatorResponseDto)));
             }
             Optional<Person> person = personRepository.findByNumeroDocumento(num);
             if (person.isPresent()){
@@ -281,18 +278,18 @@ public class PersonAdapter implements PersonServiceOut {
                 Optional<Operator> operator = operatorRepository.findByPersonaIdpersona(idPersona);
                 if (operator.isEmpty()){
                     return ResponseEntity
-                                    .ok(new BaseResponse(550,"NumDoc invalid", Optional.empty()));
+                                    .ok(new BaseResponse<>(550,"NumDoc invalid", Optional.empty()));
                 }else{
                     OperatorResponseDto responseDto = modelMapper.map(person.get(),OperatorResponseDto.class);
                     responseDto.setCodEmpleado(operator.get().getCodEmpleado());
                     String json = Util.convertDtoToJson(responseDto);
                     redisService.saveInRedis(Constant.REDIS_KEY_OBTENEROPERATOR+num,json,10);
                     return ResponseEntity
-                            .ok(new BaseResponse(200,"Success", Optional.of(responseDto)));
+                            .ok(new BaseResponse<>(200,"Success", Optional.of(responseDto)));
                 }
             }else {
                 return ResponseEntity
-                        .ok(new BaseResponse(550,"NumDoc NotExists", Optional.empty()));
+                        .ok(new BaseResponse<>(550,"NumDoc NotExists", Optional.empty()));
             }
     }
 
@@ -302,7 +299,7 @@ public class PersonAdapter implements PersonServiceOut {
             if(!isNull(redisInfo)){
                 SupplierResponseDto supplierResponseDto = Util.convertJsonToDto(redisInfo,SupplierResponseDto.class);
                 return ResponseEntity
-                        .ok(new BaseResponse(200,"Success", Optional.of(supplierResponseDto)));
+                        .ok(new BaseResponse<>(200,"Success", Optional.of(supplierResponseDto)));
             }
             Optional<Person> person = personRepository.findByNumeroDocumento(num);
             if (person.isPresent()){
@@ -310,18 +307,18 @@ public class PersonAdapter implements PersonServiceOut {
                 Optional<Supplier> supplier = supplierRepository.findByPersonaIdpersona(idPersona);
                 if (supplier.isEmpty()){
                     return ResponseEntity
-                                    .ok(new BaseResponse(550,"NumDoc invalid", Optional.empty()));
+                                    .ok(new BaseResponse<>(550,"NumDoc invalid", Optional.empty()));
                 }else{
                     SupplierResponseDto responseDto = modelMapper.map(person.get(), SupplierResponseDto.class);
                     responseDto.setEmpresa(supplier.get().getEmpresa());
                     String json = Util.convertDtoToJson(responseDto);
                     redisService.saveInRedis(Constant.REDIS_KEY_OBTENERSUPPLIER+num,json,10);
                     return ResponseEntity
-                            .ok(new BaseResponse(200,"Success", Optional.of(responseDto)));
+                            .ok(new BaseResponse<>(200,"Success", Optional.of(responseDto)));
                 }
             }else {
                 return ResponseEntity
-                        .ok(new BaseResponse(550,"NumDoc NotExists", Optional.empty()));
+                        .ok(new BaseResponse<>(550,"NumDoc NotExists", Optional.empty()));
             }
     }
 
@@ -330,12 +327,12 @@ public class PersonAdapter implements PersonServiceOut {
         Optional<Person> person = personRepository.findById(id);
         if(person.isEmpty()){
             return ResponseEntity
-                    .ok(new BaseResponse(410,"NumDoc exists", Optional.empty()));
+                    .ok(new BaseResponse<>(410,"NumDoc exists", Optional.empty()));
         }else{
             Person personUpdate = getPerson(personRequest, Constant.ACTION_UPDATE, id);
             if (isNull(personUpdate)){
                 return ResponseEntity
-                        .ok(new BaseResponse(550,"Person invalid", Optional.empty()));
+                        .ok(new BaseResponse<>(550,"Person invalid", Optional.empty()));
             }
             try{
                 PersonDto personDto = modelMapper.map(personRepository.save(personUpdate),PersonDto.class);
@@ -346,7 +343,7 @@ public class PersonAdapter implements PersonServiceOut {
                             CustomerResponseDto customerResponseDto = modelMapper.map(personDto,CustomerResponseDto.class);
                             customerResponseDto.setCodCliente(customer.get().getCodCliente());
                             return ResponseEntity
-                                    .ok(new BaseResponse(200,"Success", Optional.of(customerResponseDto)));
+                                    .ok(new BaseResponse<>(200,"Success", Optional.of(customerResponseDto)));
                         }
                     case "OPERATOR":
                         Optional<Operator> operator = operatorRepository.findByPersonaIdpersona(id);
@@ -354,14 +351,14 @@ public class PersonAdapter implements PersonServiceOut {
                             OperatorResponseDto operatorResponseDto = modelMapper.map(personDto,OperatorResponseDto.class);
                             operatorResponseDto.setCodEmpleado(operator.get().getCodEmpleado());
                             return ResponseEntity
-                                    .ok(new BaseResponse(200,"Success", Optional.of(operatorResponseDto)));
+                                    .ok(new BaseResponse<>(200,"Success", Optional.of(operatorResponseDto)));
                         }
                     default:
                         return ResponseEntity
-                                .ok(new BaseResponse(550,"Person invalid", Optional.empty()));
+                                .ok(new BaseResponse<>(550,"Person invalid", Optional.empty()));
                 }
             }catch (Exception e){
-//                controlar error generado por desconexion en bd
+                System.out.println(e.getMessage());
                 return null;
             }
         }
@@ -372,8 +369,7 @@ public class PersonAdapter implements PersonServiceOut {
         try{
             Optional<Person> person = personRepository.findById(id);
             if (person.isPresent()){
-                PersonDto personDto = modelMapper.map(person.get(),PersonDto.class);
-                return personDto;
+                return modelMapper.map(person.get(),PersonDto.class);
             }
             return new PersonDto();
         }catch (Exception e){

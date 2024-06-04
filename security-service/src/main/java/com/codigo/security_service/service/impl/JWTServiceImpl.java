@@ -69,9 +69,8 @@ public class JWTServiceImpl  implements JWTService {
 
     public boolean validate(String token) {
         try {
-            System.out.println(token.toString());
+            System.out.println(token);
             final String userEmail;
-//            userEmail = extractUsername("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcnVlYmFAZXhhbXBsZS5jb20iLCJpYXQiOjE3MTcyMjQwNjMsImV4cCI6MTcxNzIyNDE4M30.nCe5j1cZ7NqrwcU3g1442atUq2ndmlUUA9PpYhw3Vy0");
             userEmail = extractUsername(token);
             if(Objects.nonNull(userEmail)){
                 UserDetails userDetails = personService.userDetailService().loadUserByUsername(userEmail);
@@ -79,7 +78,7 @@ public class JWTServiceImpl  implements JWTService {
             }
             return false;
         }catch (Exception e){
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return false;
         }
     }

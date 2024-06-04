@@ -1,7 +1,6 @@
 package com.codigo.productservice.infraestructure.mapper;
 
 import com.codigo.productservice.domain.aggregates.dto.CategoryDto;
-import com.codigo.productservice.domain.aggregates.dto.ProductDto;
 import com.codigo.productservice.domain.aggregates.response.ProductResponse;
 import com.codigo.productservice.infraestructure.entity.Product;
 

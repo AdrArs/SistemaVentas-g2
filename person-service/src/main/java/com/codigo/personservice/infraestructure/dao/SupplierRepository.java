@@ -1,6 +1,5 @@
 package com.codigo.personservice.infraestructure.dao;
 
-import com.codigo.personservice.infraestructure.entity.Person;
 import com.codigo.personservice.infraestructure.entity.Supplier;
 import org.springframework.data.jpa.repository.JpaRepository;
 

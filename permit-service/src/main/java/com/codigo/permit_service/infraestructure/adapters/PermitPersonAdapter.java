@@ -34,33 +34,27 @@ public class PermitPersonAdapter implements PermitPersonOut {
             PersonDto personDto = personClient.getPerson(permitPersonRequest.getPersonId());
             if (isNull(personDto)){
                 return ResponseEntity
-                        .ok(new BaseResponse(414,"Invalid Person", Optional.empty()));
+                        .ok(new BaseResponse<>(414,"Invalid Person", Optional.empty()));
             }
 
             Optional<Permit> permit = permitRepository.findById(permitPersonRequest.getPermit());
             if(permit.isEmpty()){
                 return ResponseEntity
-                        .ok(new BaseResponse(419,"Invalid Permit", Optional.empty()));
+                        .ok(new BaseResponse<>(419,"Invalid Permit", Optional.empty()));
             }
             PermitPerson permitPerson = getPermitPerson(permitPersonRequest,"CREATE", Optional.empty());
             if (isNull(permitPerson)){
                 return ResponseEntity
-                        .ok(new BaseResponse(414,"Invalid Request", Optional.empty()));
+                        .ok(new BaseResponse<>(414,"Invalid Request", Optional.empty()));
             }
             PermitPerson permitPersonNew = permitPersonRepository.save(permitPerson);
-//            PermitDto permitDto = modelMapper.map(permit.get(),PermitDto.class);
             PermitPersonDto permitPersonDto = mapToPermitPersonDtoNew(permitPersonNew,personDto,permit.get());
-//            PermitPersonDto permitPersonDto = PermitPersonDto.builder()
-//                    .id(permitPersonNew.getId())
-//                    .person(personDto)
-//                    .permit(permitDto)
-//                    .build();
             return ResponseEntity
-                    .ok(new BaseResponse(200,"Success", Optional.of(permitPersonDto)));
+                    .ok(new BaseResponse<>(200,"Success", Optional.of(permitPersonDto)));
         }catch (Exception e){
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return ResponseEntity
-                    .ok(new BaseResponse(414,"Invalid Request", Optional.empty()));
+                    .ok(new BaseResponse<>(414,"Invalid Request", Optional.empty()));
         }
     }
 
@@ -70,28 +64,26 @@ public class PermitPersonAdapter implements PermitPersonOut {
             Optional<PermitPerson> permitPerson = permitPersonRepository.findById(id);
             if (permitPerson.isEmpty()){
                 return ResponseEntity
-                        .ok(new BaseResponse(414,"Id Invalid", Optional.empty()));
+                        .ok(new BaseResponse<>(414,"Id Invalid", Optional.empty()));
             }
             PersonDto personDto = personClient.getPerson(permitPerson.get().getPersonaId());
             if (isNull(personDto)){
                 return ResponseEntity
-                        .ok(new BaseResponse(414,"Invalid Person", Optional.empty()));
+                        .ok(new BaseResponse<>(414,"Invalid Person", Optional.empty()));
             }
 
             Optional<Permit> permit = permitRepository.findById(permitPerson.get().getPermisoId());
             if(permit.isEmpty()){
                 return ResponseEntity
-                        .ok(new BaseResponse(419,"Invalid Permit", Optional.empty()));
+                        .ok(new BaseResponse<>(419,"Invalid Permit", Optional.empty()));
             }
-//            PermitDto permitDto = modelMapper.map(permit.get(),PermitDto.class);
             PermitPersonDto permitPersonDto = mapToPermitPersonDtoNew(permitPerson.get(),personDto,permit.get());
-//            PermitPersonDto permitPersonDto = modelMapper.map(permitPerson.get(),PermitPersonDto.class);
             return ResponseEntity
-                    .ok(new BaseResponse(200,"Success", Optional.of(permitPersonDto)));
+                    .ok(new BaseResponse<>(200,"Success", Optional.of(permitPersonDto)));
         }catch (Exception e){
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return ResponseEntity
-                    .ok(new BaseResponse(414,"Invalid Request", Optional.empty()));
+                    .ok(new BaseResponse<>(414,"Invalid Request", Optional.empty()));
         }
 
     }
@@ -101,7 +93,7 @@ public class PermitPersonAdapter implements PermitPersonOut {
         List<PermitPerson> list = permitPersonRepository.findByPersonaId(id);
         if (list.isEmpty()){
             return ResponseEntity
-                    .ok(new BaseResponse(414,"No content", Optional.empty()));
+                    .ok(new BaseResponse<>(414,"No content", Optional.empty()));
         }
         List<Permit> permits = list.stream()
                 .map(l -> permitRepository.findById(l.getPermisoId()).orElse(null))
@@ -110,7 +102,7 @@ public class PermitPersonAdapter implements PermitPersonOut {
                 .map(l -> modelMapper.map(l, PermitDto.class))
                 .toList();
         return ResponseEntity
-                    .ok(new BaseResponse(200,"Success", Optional.of(permitDtos)));
+                    .ok(new BaseResponse<>(200,"Success", Optional.of(permitDtos)));
     }
 
     @Override
@@ -119,16 +111,16 @@ public class PermitPersonAdapter implements PermitPersonOut {
             List<PermitPerson> list = permitPersonRepository.findAll();
             if(list.isEmpty()) {
                 return ResponseEntity
-                        .ok(new BaseResponse(200,"No content", Optional.empty()));
+                        .ok(new BaseResponse<>(200,"No content", Optional.empty()));
             }
             List<PermitPersonDto> permitPersonDtos = list.stream()
                     .map(this::mapToPermitPersonDto).toList();
             return ResponseEntity
-                    .ok(new BaseResponse(200,"Success", Optional.of(permitPersonDtos)));
+                    .ok(new BaseResponse<>(200,"Success", Optional.of(permitPersonDtos)));
         }catch (Exception e){
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return ResponseEntity
-                    .ok(new BaseResponse(414,"Invalid Request", Optional.empty()));
+                    .ok(new BaseResponse<>(414,"Invalid Request", Optional.empty()));
         }
     }
 
@@ -138,28 +130,27 @@ public class PermitPersonAdapter implements PermitPersonOut {
             Optional<PermitPerson> permitPerson = permitPersonRepository.findById(id);
             if (permitPerson.isEmpty()) {
                 return ResponseEntity
-                        .ok(new BaseResponse(414,"Id Invalid", Optional.empty()));
+                        .ok(new BaseResponse<>(414,"Id Invalid", Optional.empty()));
             }
             PersonDto personDto = personClient.getPerson(permitPersonRequest.getPersonId());
             if (isNull(personDto)){
                 return ResponseEntity
-                        .ok(new BaseResponse(414,"Invalid Person", Optional.empty()));
+                        .ok(new BaseResponse<>(414,"Invalid Person", Optional.empty()));
             }
             Optional<Permit> permit = permitRepository.findById(permitPersonRequest.getPermit());
             if(permit.isEmpty()){
                 return ResponseEntity
-                        .ok(new BaseResponse(419,"Invalid Permit", Optional.empty()));
+                        .ok(new BaseResponse<>(419,"Invalid Permit", Optional.empty()));
             }
             PermitPerson permitPersonEntity = getPermitPerson(permitPersonRequest,"UPDATE",permitPerson);
             PermitPerson permitPersonUpdate = permitPersonRepository.save(permitPersonEntity);
-//        PermitPersonDto permitPersonDto = modelMapper.map(permitPersonRepository.save(permitPersonUpdate),PermitPersonDto.class);
             PermitPersonDto permitPersonDto = mapToPermitPersonDtoNew(permitPersonUpdate,personDto,permit.get());
             return ResponseEntity
-                    .ok(new BaseResponse(200,"Success", Optional.of(permitPersonDto)));
+                    .ok(new BaseResponse<>(200,"Success", Optional.of(permitPersonDto)));
         }catch (Exception e){
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return ResponseEntity
-                    .ok(new BaseResponse(414,"Invalid Request", Optional.empty()));
+                    .ok(new BaseResponse<>(414,"Invalid Request", Optional.empty()));
         }
     }
 
